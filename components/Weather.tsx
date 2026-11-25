@@ -175,8 +175,9 @@ export default function Weather() {
 
   return (
     <div className="min-h-dvh">
-      {/* Floating controls, bottom centre */}
-      <header className="fixed bottom-4 left-1/2 z-10 flex w-max max-w-[calc(100vw-1.5rem)] -translate-x-1/2 flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-[8px] bg-raised/95 px-3 py-1.5 shadow-[inset_0_0_0_1px_rgba(255,255,255,.2),0_8px_24px_rgba(0,0,0,.6)] backdrop-blur">
+      {/* Top bar, exactly as wide as the cards */}
+      <header className="sticky top-0 z-10 mx-auto max-w-[1400px] bg-field px-3 pt-3">
+        <div className="flex min-h-[46px] flex-wrap items-center gap-x-3 gap-y-1 rounded-[4px] bg-panel px-4 py-1.5 shadow-[inset_0_0_0_1px_rgba(255,255,255,.2)]">
         <span className="flex items-center gap-2 text-base font-semibold">
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path fill="#8abbff" d="M1 4h14v2H1zm0 3.5h14v2H1zM1 11h14v2H1z" /></svg>
           Feels Like
@@ -185,8 +186,7 @@ export default function Weather() {
         <button onClick={() => setPicking(true)} className="h-[30px] rounded-[2px] px-2 text-sm text-dim hover:bg-well hover:text-ink">
           {place.name}
         </button>
-        <span className="h-5 w-px bg-line max-sm:hidden" />
-        <span className="flex flex-wrap items-center justify-center gap-3">
+        <span className="ml-auto flex flex-wrap items-center gap-3">
           <label className="flex items-center gap-2 text-xs text-dim">
             {biasLabel(bias)}
             <input
@@ -209,9 +209,10 @@ export default function Weather() {
             ))}
           </span>
         </span>
+      </div>
       </header>
 
-      <main className="mx-auto grid max-w-[1400px] gap-3 p-3 pb-24 lg:grid-cols-12">
+      <main className="mx-auto grid max-w-[1400px] gap-3 p-3 lg:grid-cols-12">
         {/* Key readings */}
         <section aria-live="polite" className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:col-span-12 lg:grid-cols-12">
           <div className="col-span-2 flex items-center gap-4 rounded-[4px] bg-panel p-4 shadow-[inset_0_0_0_1px_rgba(255,255,255,.2)] sm:col-span-4" style={{ borderLeft: `3px solid ${color}` }}>

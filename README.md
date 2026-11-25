@@ -4,6 +4,8 @@
 
 I don't function well in it, and I never know what to wear. Weather apps give me numbers; numbers don't tell me how it's going to feel. So I built this. It exists for one reason: to help me not get sick.
 
+![The dashboard on a freezing afternoon in New York: layer level 4, every layer you own](docs/dashboard.jpg)
+
 ## What it does
 
 It looks at the forecast and answers one question: how many layers do I need?

@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# feels-weather
 
-## Getting Started
+**I HATE THE COLD.**
 
-First, run the development server:
+I don't function well in it, and I never know what to wear. Weather apps give me numbers; numbers don't tell me how it's going to feel. So I built this. It exists for one reason: to help me not get sick.
+
+## What it does
+
+It looks at the forecast and answers one question: how many layers do I need?
+
+- **Layer level, 1 to 4.** One big number, in my own clothes: long-sleeve, hoodie, quarter-zip, everything.
+- **Feels-like chart.** The next 24 hours drawn over the bands where each layer goes on, so I can see when it gets worse.
+- **Body map.** Which parts of me will be cold in that outfit (hands, ears, feet) and what to do about it.
+- **Briefing.** What my body will notice, what to wear, what to take, and how it compares with yesterday.
+- **7-day outlook.** A level for every day this week.
+- **Nearby grid.** How it feels in the area around me.
+- **Outing planner.** Dresses me for the coldest part of the time I'll be out.
+- **Calibration.** "Too cold / just right / too warm" buttons and an "I run cold" slider that shift every threshold.
+
+## Run it
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 and allow location, or search for a city.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Make it yours
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The clothes are mine. Change the `WARDROBE` block in `lib/feel.ts` to match what's in your closet.
 
-## Learn More
+## Built with
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Next.js, Tailwind CSS, and forecast data from [Open-Meteo](https://open-meteo.com) (free, no API key).

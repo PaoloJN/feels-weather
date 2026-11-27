@@ -339,6 +339,65 @@ export function summarizeDays(hours: Hour[], nowIndex: number, bias: number): Da
   return days.slice(0, 7);
 }
 
+/* ---------- Nice-weather outlook: when can I next be outside without being cold, with some sun ---------- */
+
+/** Hoodie weather or better. Moves with the "I run cold" slider like every other threshold. */
+const RIDE_FLOOR = LEVEL_FLOOR[2];
+const RIDE_MIN_HOURS = 2;
+
+const rideable = (h: Hour, bias: number) =>
+  h.isDay && feelOf(h, bias) >= RIDE_FLOOR && h.pop < 30 && h.precip < 0.2 && !conditions(h, bias).snowy && h.cloud <= 60;
+
+export type RideDay = { date: string; peak: number; state: "ride" | "wet" | "cold" };
+export type RideOutlook = {
+  floor: number; // °C of feels-like it has to reach
+  days: RideDay[];
+  next: { start: Hour; end: Hour; daysAway: number; now: boolean } | null;
+  closest: RideDay | null; // the warmest day, when nothing qualifies
+};
+
+export function rideOutlook(hours: Hour[], nowIndex: number, bias: number): RideOutlook {
+  const ahead = hours.slice(nowIndex);
+  const dayNumber = (date: string) => {
+    const [y, m, d] = date.split("-").map(Number);
+    return Date.UTC(y, m - 1, d) / 86400000;
+  };
+
+  // Every dry, warm, at least partly sunny stretch of two hours or more.
+  const windows: { start: Hour; end: Hour }[] = [];
+  let run: Hour[] = [];
+  const close = () => {
+    if (run.length >= RIDE_MIN_HOURS) windows.push({ start: run[0], end: run[run.length - 1] });
+    run = [];
+  };
+  ahead.forEach((h) => (rideable(h, bias) ? run.push(h) : close()));
+  close();
+
+  const groups = new Map<string, Hour[]>();
+  ahead.forEach((h) => groups.set(dateOf(h), [...(groups.get(dateOf(h)) ?? []), h]));
+  const days: RideDay[] = [];
+  for (const [date, all] of groups) {
+    const light = all.filter((h) => h.isDay);
+    if (light.length === 0) continue;
+    const warm = light.filter((h) => feelOf(h, bias) >= RIDE_FLOOR).length;
+    days.push({
+      date,
+      peak: Math.max(...light.map((h) => h.feels)),
+      state: windows.some((w) => dateOf(w.start) === date) ? "ride" : warm >= RIDE_MIN_HOURS ? "wet" : "cold",
+    });
+  }
+
+  const first = windows[0];
+  return {
+    floor: RIDE_FLOOR - bias * 2,
+    days,
+    next: first
+      ? { ...first, daysAway: dayNumber(dateOf(first.start)) - dayNumber(dateOf(ahead[0])), now: first.start === ahead[0] }
+      : null,
+    closest: first || days.length === 0 ? null : days.reduce((a, b) => (b.peak > a.peak ? b : a)),
+  };
+}
+
 /* ---------- Body map: which parts will actually feel it, in the suggested outfit ---------- */
 
 export type PartId = "head" | "neck" | "core" | "arms" | "hands" | "legs" | "feet";

@@ -3,10 +3,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Body from "./Body";
 import Chart, { LEVEL_COLOR } from "./Chart";
+import Ride from "./Ride";
 import { fetchForecast, fetchNearby, searchPlaces, type Forecast, type Hour, type Place } from "@/lib/weather";
 import {
   LEVEL_NAME, bodyMap, clock, conditions, dateOf, headline, moments, outfitFor, planOuting,
-  sensation, summarizeDays, temp, verdict, versusYesterday, weekday,
+  rideOutlook, sensation, summarizeDays, temp, verdict, versusYesterday, weekday,
 } from "@/lib/feel";
 
 type Settings = { place: Place | null; unit: "F" | "C"; bias: number };
@@ -105,7 +106,8 @@ export default function Weather() {
     const now = hours[nowIndex];
     const next24 = hours.slice(nowIndex, nowIndex + 24);
     const days = summarizeDays(hours, nowIndex, bias);
-    return { hours, nowIndex, now, next24, days };
+    const ride = rideOutlook(hours, nowIndex, bias);
+    return { hours, nowIndex, now, next24, days, ride };
   }, [data, bias]);
 
   if (locating && !place) {
@@ -385,6 +387,9 @@ export default function Weather() {
           )}
 
             <div className="grid content-start gap-3">
+          <Card title="Next nice day" right={<span className="text-xs text-mute">warm, dry, some sun</span>}>
+            <Ride ride={view.ride} unit={unit} />
+          </Card>
           <Card title="Calibration">
             <p className="text-dim">{thanks ?? "Been out in this? Report how it felt and the thresholds adjust."}</p>
             <div className="mt-3 flex flex-wrap gap-2">

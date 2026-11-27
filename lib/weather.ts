@@ -36,7 +36,7 @@ const HOURLY = [
 export async function fetchForecast(p: Place): Promise<Forecast> {
   const url =
     `https://api.open-meteo.com/v1/forecast?latitude=${p.lat.toFixed(2)}&longitude=${p.lon.toFixed(2)}` +
-    `&current=temperature_2m&hourly=${HOURLY}&past_days=1&forecast_days=7&timezone=auto`;
+    `&current=temperature_2m&hourly=${HOURLY}&past_days=1&forecast_days=16&timezone=auto`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Weather service answered ${res.status}`);
   const j = await res.json();

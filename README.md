@@ -16,6 +16,7 @@ It looks at the forecast and answers one question: how many layers do I need?
 - **Briefing.** What my body will notice, what to wear, what to take, and how it compares with yesterday.
 - **7-day outlook.** A level for every day this week.
 - **Nearby grid.** How it feels in the area around me.
+- **Next nice day.** A countdown to the next warm, dry, partly sunny stretch when I can be outside without being cold, with 16 days of peaks drawn against the warm line.
 - **Outing planner.** Dresses me for the coldest part of the time I'll be out.
 - **Calibration.** "Too cold / just right / too warm" buttons and an "I run cold" slider that shift every threshold.
 
